@@ -865,11 +865,6 @@ static DetectorResults DetectNew(const BitMatrix& image, bool tryHarder, bool tr
 //	tryRotate = tryHarder = false;
 #endif
 
-	// disable expensive multi-line scan to detect off-center symbols for now
-#ifndef __cpp_impl_coroutine
-	tryHarder = false;
-#endif
-
 	// a history log to remember where the tracing already passed by to prevent a later trace from doing the same work twice
 	ByteMatrix history;
 	if (tryHarder)
