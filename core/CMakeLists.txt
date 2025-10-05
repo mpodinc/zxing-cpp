@@ -73,6 +73,25 @@ else()
         -Wall -Wextra -Wno-missing-braces -Werror=undef -Werror=return-type)
 endif()
 
+if (ZXING_ENABLE_1D AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_1D)
+endif()
+if (ZXING_ENABLE_AZTEC AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_AZTEC)
+endif()
+if (ZXING_ENABLE_DATAMATRIX AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_DATAMATRIX)
+endif()
+if (ZXING_ENABLE_MAXICODE AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_MAXICODE)
+endif()
+if (ZXING_ENABLE_PDF417 AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_PDF417)
+endif()
+if (ZXING_ENABLE_QR_CODE AND (ZXING_READERS OR ZXING_WRITERS_OLD))
+    list(APPEND ZXING_PUBLIC_FLAGS -DZXING_BUILD_QR_CODE)
+endif()
+
 include (CheckCXXCompilerFlag)
 
 # This is needed for reproducible builds across different build directories.
@@ -249,235 +268,247 @@ if (ZXING_WRITERS_OLD)
 endif()
 # end of public header set
 
-if (ZXING_READERS)
-    set (AZTEC_FILES ${AZTEC_FILES}
-        src/aztec/AZDecoder.h
-        src/aztec/AZDecoder.cpp
-        src/aztec/AZDetector.h
-        src/aztec/AZDetector.cpp
-        src/aztec/AZDetectorResult.h
-        src/aztec/AZReader.h
-        src/aztec/AZReader.cpp
-    )
-endif()
-if (ZXING_WRITERS_OLD)
-    set (AZTEC_FILES ${AZTEC_FILES}
-        src/aztec/AZEncodingState.h
-        src/aztec/AZEncoder.h
-        src/aztec/AZEncoder.cpp
-        src/aztec/AZHighLevelEncoder.h
-        src/aztec/AZHighLevelEncoder.cpp
-        src/aztec/AZToken.h
-        src/aztec/AZToken.cpp
-        src/aztec/AZWriter.h
-        src/aztec/AZWriter.cpp
-    )
-endif()
-
-
-if (ZXING_READERS OR ZXING_WRITERS_OLD)
-    set (DATAMATRIX_FILES
-        src/datamatrix/DMBitLayout.h
-        src/datamatrix/DMBitLayout.cpp
-        src/datamatrix/DMVersion.h
-        src/datamatrix/DMVersion.cpp
-    )
-endif()
-if (ZXING_READERS)
-    set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
-        src/datamatrix/DMDataBlock.h
-        src/datamatrix/DMDataBlock.cpp
-        src/datamatrix/DMDecoder.h
-        src/datamatrix/DMDecoder.cpp
-        src/datamatrix/DMDetector.h
-        src/datamatrix/DMDetector.cpp
-        src/datamatrix/DMReader.h
-        src/datamatrix/DMReader.cpp
-    )
-endif()
-if (ZXING_WRITERS_OLD)
-    set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
-        src/datamatrix/DMECEncoder.h
-        src/datamatrix/DMECEncoder.cpp
-        src/datamatrix/DMEncoderContext.h
-        src/datamatrix/DMHighLevelEncoder.h
-        src/datamatrix/DMHighLevelEncoder.cpp
-        src/datamatrix/DMSymbolInfo.h
-        src/datamatrix/DMSymbolInfo.cpp
-        src/datamatrix/DMSymbolShape.h
-        src/datamatrix/DMWriter.h
-        src/datamatrix/DMWriter.cpp
-    )
+if (ZXING_ENABLE_AZTEC)
+    if (ZXING_READERS)
+        set (AZTEC_FILES ${AZTEC_FILES}
+            src/aztec/AZDecoder.h
+            src/aztec/AZDecoder.cpp
+            src/aztec/AZDetector.h
+            src/aztec/AZDetector.cpp
+            src/aztec/AZDetectorResult.h
+            src/aztec/AZReader.h
+            src/aztec/AZReader.cpp
+        )
+    endif()
+    if (ZXING_WRITERS_OLD)
+        set (AZTEC_FILES ${AZTEC_FILES}
+            src/aztec/AZEncodingState.h
+            src/aztec/AZEncoder.h
+            src/aztec/AZEncoder.cpp
+            src/aztec/AZHighLevelEncoder.h
+            src/aztec/AZHighLevelEncoder.cpp
+            src/aztec/AZToken.h
+            src/aztec/AZToken.cpp
+            src/aztec/AZWriter.h
+            src/aztec/AZWriter.cpp
+        )
+    endif()
 endif()
 
 
-if (ZXING_READERS)
-    set (MAXICODE_FILES ${MAXICODE_FILES}
-        src/maxicode/MCBitMatrixParser.h
-        src/maxicode/MCBitMatrixParser.cpp
-        src/maxicode/MCDecoder.h
-        src/maxicode/MCDecoder.cpp
-        src/maxicode/MCReader.h
-        src/maxicode/MCReader.cpp
-    )
+if (ZXING_ENABLE_DATAMATRIX)
+    if (ZXING_READERS OR ZXING_WRITERS_OLD)
+        set (DATAMATRIX_FILES
+            src/datamatrix/DMBitLayout.h
+            src/datamatrix/DMBitLayout.cpp
+            src/datamatrix/DMVersion.h
+            src/datamatrix/DMVersion.cpp
+        )
+    endif()
+    if (ZXING_READERS)
+        set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
+            src/datamatrix/DMDataBlock.h
+            src/datamatrix/DMDataBlock.cpp
+            src/datamatrix/DMDecoder.h
+            src/datamatrix/DMDecoder.cpp
+            src/datamatrix/DMDetector.h
+            src/datamatrix/DMDetector.cpp
+            src/datamatrix/DMReader.h
+            src/datamatrix/DMReader.cpp
+        )
+    endif()
+    if (ZXING_WRITERS_OLD)
+        set (DATAMATRIX_FILES ${DATAMATRIX_FILES}
+            src/datamatrix/DMECEncoder.h
+            src/datamatrix/DMECEncoder.cpp
+            src/datamatrix/DMEncoderContext.h
+            src/datamatrix/DMHighLevelEncoder.h
+            src/datamatrix/DMHighLevelEncoder.cpp
+            src/datamatrix/DMSymbolInfo.h
+            src/datamatrix/DMSymbolInfo.cpp
+            src/datamatrix/DMSymbolShape.h
+            src/datamatrix/DMWriter.h
+            src/datamatrix/DMWriter.cpp
+        )
+    endif()
 endif()
 
 
-if (ZXING_READERS OR ZXING_WRITERS_OLD)
-    set (ONED_FILES
-        src/oned/ODUPCEANCommon.h
-        src/oned/ODUPCEANCommon.cpp
-        src/oned/ODCode93Patterns.h
-        src/oned/ODCode128Patterns.h
-        src/oned/ODCode128Patterns.cpp
-    )
-endif()
-if (ZXING_READERS)
-    set (ONED_FILES ${ONED_FILES}
-        src/oned/ODCodabarReader.h
-        src/oned/ODCodabarReader.cpp
-        src/oned/ODCode39Reader.h
-        src/oned/ODCode39Reader.cpp
-        src/oned/ODCode93Reader.h
-        src/oned/ODCode93Reader.cpp
-        src/oned/ODCode128Reader.h
-        src/oned/ODCode128Reader.cpp
-        src/oned/ODDataBarCommon.h
-        src/oned/ODDataBarCommon.cpp
-        src/oned/ODDataBarReader.h
-        src/oned/ODDataBarReader.cpp
-        src/oned/ODDataBarExpandedBitDecoder.h
-        src/oned/ODDataBarExpandedBitDecoder.cpp
-        src/oned/ODDataBarExpandedReader.h
-        src/oned/ODDataBarExpandedReader.cpp
-        src/oned/ODDataBarLimitedReader.h
-        src/oned/ODDataBarLimitedReader.cpp
-        src/oned/ODDXFilmEdgeReader.h
-        src/oned/ODDXFilmEdgeReader.cpp
-        src/oned/ODITFReader.h
-        src/oned/ODITFReader.cpp
-        src/oned/ODMultiUPCEANReader.h
-        src/oned/ODMultiUPCEANReader.cpp
-        src/oned/ODReader.h
-        src/oned/ODReader.cpp
-        src/oned/ODRowReader.h
-    )
-endif()
-if (ZXING_WRITERS_OLD)
-    set (ONED_FILES ${ONED_FILES}
-        src/oned/ODCodabarWriter.h
-        src/oned/ODCodabarWriter.cpp
-        src/oned/ODCode39Writer.h
-        src/oned/ODCode39Writer.cpp
-        src/oned/ODCode93Writer.h
-        src/oned/ODCode93Writer.cpp
-        src/oned/ODCode128Writer.h
-        src/oned/ODCode128Writer.cpp
-        src/oned/ODEAN8Writer.h
-        src/oned/ODEAN8Writer.cpp
-        src/oned/ODEAN13Writer.h
-        src/oned/ODEAN13Writer.cpp
-        src/oned/ODITFWriter.h
-        src/oned/ODITFWriter.cpp
-        src/oned/ODUPCEWriter.h
-        src/oned/ODUPCEWriter.cpp
-        src/oned/ODUPCAWriter.h
-        src/oned/ODUPCAWriter.cpp
-        src/oned/ODWriterHelper.h
-        src/oned/ODWriterHelper.cpp
-    )
+if (ZXING_ENABLE_MAXICODE)
+    if (ZXING_READERS)
+        set (MAXICODE_FILES ${MAXICODE_FILES}
+            src/maxicode/MCBitMatrixParser.h
+            src/maxicode/MCBitMatrixParser.cpp
+            src/maxicode/MCDecoder.h
+            src/maxicode/MCDecoder.cpp
+            src/maxicode/MCReader.h
+            src/maxicode/MCReader.cpp
+        )
+    endif()
 endif()
 
 
-if (ZXING_READERS OR ZXING_WRITERS_OLD)
-    set (PDF417_FILES
-        src/pdf417/ZXBigInteger.h
-        src/pdf417/ZXBigInteger.cpp
-    )
-endif()
-if (ZXING_READERS)
-    set (PDF417_FILES ${PDF417_FILES}
-        src/pdf417/PDFBarcodeMetadata.h
-        src/pdf417/PDFBarcodeValue.h
-        src/pdf417/PDFBarcodeValue.cpp
-        src/pdf417/PDFBoundingBox.h
-        src/pdf417/PDFBoundingBox.cpp
-        src/pdf417/PDFCodeword.h
-        src/pdf417/PDFCodewordDecoder.h
-        src/pdf417/PDFCodewordDecoder.cpp
-        src/pdf417/PDFCustomData.h
-        src/pdf417/PDFDecoder.h
-        src/pdf417/PDFDecoder.cpp
-        src/pdf417/PDFDetectionResult.h
-        src/pdf417/PDFDetectionResult.cpp
-        src/pdf417/PDFDetectionResultColumn.h
-        src/pdf417/PDFDetectionResultColumn.cpp
-        src/pdf417/PDFDetector.h
-        src/pdf417/PDFDetector.cpp
-        src/pdf417/PDFModulusGF.h
-        src/pdf417/PDFModulusGF.cpp
-        src/pdf417/PDFModulusPoly.h
-        src/pdf417/PDFModulusPoly.cpp
-        src/pdf417/PDFReader.h
-        src/pdf417/PDFReader.cpp
-        src/pdf417/PDFScanningDecoder.h
-        src/pdf417/PDFScanningDecoder.cpp
-        src/pdf417/ZXNullable.h
-    )
-endif()
-if (ZXING_WRITERS_OLD)
-    set (PDF417_FILES ${PDF417_FILES}
-        src/pdf417/PDFCompaction.h
-        src/pdf417/PDFEncoder.h
-        src/pdf417/PDFEncoder.cpp
-        src/pdf417/PDFHighLevelEncoder.h
-        src/pdf417/PDFHighLevelEncoder.cpp
-        src/pdf417/PDFWriter.h
-        src/pdf417/PDFWriter.cpp
-    )
+if (ZXING_ENABLE_1D)
+    if (ZXING_READERS OR ZXING_WRITERS_OLD)
+        set (ONED_FILES
+            src/oned/ODUPCEANCommon.h
+            src/oned/ODUPCEANCommon.cpp
+            src/oned/ODCode93Patterns.h
+            src/oned/ODCode128Patterns.h
+            src/oned/ODCode128Patterns.cpp
+        )
+    endif()
+    if (ZXING_READERS)
+        set (ONED_FILES ${ONED_FILES}
+            src/oned/ODCodabarReader.h
+            src/oned/ODCodabarReader.cpp
+            src/oned/ODCode39Reader.h
+            src/oned/ODCode39Reader.cpp
+            src/oned/ODCode93Reader.h
+            src/oned/ODCode93Reader.cpp
+            src/oned/ODCode128Reader.h
+            src/oned/ODCode128Reader.cpp
+            src/oned/ODDataBarCommon.h
+            src/oned/ODDataBarCommon.cpp
+            src/oned/ODDataBarReader.h
+            src/oned/ODDataBarReader.cpp
+            src/oned/ODDataBarExpandedBitDecoder.h
+            src/oned/ODDataBarExpandedBitDecoder.cpp
+            src/oned/ODDataBarExpandedReader.h
+            src/oned/ODDataBarExpandedReader.cpp
+            src/oned/ODDataBarLimitedReader.h
+            src/oned/ODDataBarLimitedReader.cpp
+            src/oned/ODDXFilmEdgeReader.h
+            src/oned/ODDXFilmEdgeReader.cpp
+            src/oned/ODITFReader.h
+            src/oned/ODITFReader.cpp
+            src/oned/ODMultiUPCEANReader.h
+            src/oned/ODMultiUPCEANReader.cpp
+            src/oned/ODReader.h
+            src/oned/ODReader.cpp
+            src/oned/ODRowReader.h
+        )
+    endif()
+    if (ZXING_WRITERS_OLD)
+        set (ONED_FILES ${ONED_FILES}
+            src/oned/ODCodabarWriter.h
+            src/oned/ODCodabarWriter.cpp
+            src/oned/ODCode39Writer.h
+            src/oned/ODCode39Writer.cpp
+            src/oned/ODCode93Writer.h
+            src/oned/ODCode93Writer.cpp
+            src/oned/ODCode128Writer.h
+            src/oned/ODCode128Writer.cpp
+            src/oned/ODEAN8Writer.h
+            src/oned/ODEAN8Writer.cpp
+            src/oned/ODEAN13Writer.h
+            src/oned/ODEAN13Writer.cpp
+            src/oned/ODITFWriter.h
+            src/oned/ODITFWriter.cpp
+            src/oned/ODUPCEWriter.h
+            src/oned/ODUPCEWriter.cpp
+            src/oned/ODUPCAWriter.h
+            src/oned/ODUPCAWriter.cpp
+            src/oned/ODWriterHelper.h
+            src/oned/ODWriterHelper.cpp
+        )
+    endif()
 endif()
 
 
-if (ZXING_READERS OR ZXING_WRITERS_OLD)
-    set (QRCODE_FILES
-        src/qrcode/QRCodecMode.h
-        src/qrcode/QRCodecMode.cpp
-        src/qrcode/QRErrorCorrectionLevel.h
-        src/qrcode/QRErrorCorrectionLevel.cpp
-        src/qrcode/QRVersion.h
-        src/qrcode/QRVersion.cpp
-    )
+if (ZXING_ENABLE_PDF417)
+    if (ZXING_READERS OR ZXING_WRITERS_OLD)
+        set (PDF417_FILES
+            src/pdf417/ZXBigInteger.h
+            src/pdf417/ZXBigInteger.cpp
+        )
+    endif()
+    if (ZXING_READERS)
+        set (PDF417_FILES ${PDF417_FILES}
+            src/pdf417/PDFBarcodeMetadata.h
+            src/pdf417/PDFBarcodeValue.h
+            src/pdf417/PDFBarcodeValue.cpp
+            src/pdf417/PDFBoundingBox.h
+            src/pdf417/PDFBoundingBox.cpp
+            src/pdf417/PDFCodeword.h
+            src/pdf417/PDFCodewordDecoder.h
+            src/pdf417/PDFCodewordDecoder.cpp
+            src/pdf417/PDFCustomData.h
+            src/pdf417/PDFDecoder.h
+            src/pdf417/PDFDecoder.cpp
+            src/pdf417/PDFDetectionResult.h
+            src/pdf417/PDFDetectionResult.cpp
+            src/pdf417/PDFDetectionResultColumn.h
+            src/pdf417/PDFDetectionResultColumn.cpp
+            src/pdf417/PDFDetector.h
+            src/pdf417/PDFDetector.cpp
+            src/pdf417/PDFModulusGF.h
+            src/pdf417/PDFModulusGF.cpp
+            src/pdf417/PDFModulusPoly.h
+            src/pdf417/PDFModulusPoly.cpp
+            src/pdf417/PDFReader.h
+            src/pdf417/PDFReader.cpp
+            src/pdf417/PDFScanningDecoder.h
+            src/pdf417/PDFScanningDecoder.cpp
+            src/pdf417/ZXNullable.h
+        )
+    endif()
+    if (ZXING_WRITERS_OLD)
+        set (PDF417_FILES ${PDF417_FILES}
+            src/pdf417/PDFCompaction.h
+            src/pdf417/PDFEncoder.h
+            src/pdf417/PDFEncoder.cpp
+            src/pdf417/PDFHighLevelEncoder.h
+            src/pdf417/PDFHighLevelEncoder.cpp
+            src/pdf417/PDFWriter.h
+            src/pdf417/PDFWriter.cpp
+        )
+    endif()
 endif()
-if (ZXING_READERS)
-    set (QRCODE_FILES ${QRCODE_FILES}
-        src/qrcode/QRBitMatrixParser.h
-        src/qrcode/QRBitMatrixParser.cpp
-        src/qrcode/QRDataBlock.h
-        src/qrcode/QRDataBlock.cpp
-        src/qrcode/QRDataMask.h
-        src/qrcode/QRDecoder.h
-        src/qrcode/QRDecoder.cpp
-        src/qrcode/QRDetector.h
-        src/qrcode/QRDetector.cpp
-        src/qrcode/QRECB.h
-        src/qrcode/QRFormatInformation.h
-        src/qrcode/QRFormatInformation.cpp
-        src/qrcode/QRReader.h
-        src/qrcode/QRReader.cpp
-    )
-endif()
-if (ZXING_WRITERS_OLD)
-    set (QRCODE_FILES ${QRCODE_FILES}
-        src/qrcode/QREncoder.h
-        src/qrcode/QREncoder.cpp
-        src/qrcode/QREncodeResult.h
-        src/qrcode/QRMaskUtil.h
-        src/qrcode/QRMaskUtil.cpp
-        src/qrcode/QRMatrixUtil.h
-        src/qrcode/QRMatrixUtil.cpp
-        src/qrcode/QRWriter.h
-        src/qrcode/QRWriter.cpp
-    )
+
+
+if (ZXING_ENABLE_QR_CODE)
+    if (ZXING_READERS OR ZXING_WRITERS_OLD)
+        set (QRCODE_FILES
+            src/qrcode/QRCodecMode.h
+            src/qrcode/QRCodecMode.cpp
+            src/qrcode/QRErrorCorrectionLevel.h
+            src/qrcode/QRErrorCorrectionLevel.cpp
+            src/qrcode/QRVersion.h
+            src/qrcode/QRVersion.cpp
+        )
+    endif()
+    if (ZXING_READERS)
+        set (QRCODE_FILES ${QRCODE_FILES}
+            src/qrcode/QRBitMatrixParser.h
+            src/qrcode/QRBitMatrixParser.cpp
+            src/qrcode/QRDataBlock.h
+            src/qrcode/QRDataBlock.cpp
+            src/qrcode/QRDataMask.h
+            src/qrcode/QRDecoder.h
+            src/qrcode/QRDecoder.cpp
+            src/qrcode/QRDetector.h
+            src/qrcode/QRDetector.cpp
+            src/qrcode/QRECB.h
+            src/qrcode/QRFormatInformation.h
+            src/qrcode/QRFormatInformation.cpp
+            src/qrcode/QRReader.h
+            src/qrcode/QRReader.cpp
+        )
+    endif()
+    if (ZXING_WRITERS_OLD)
+        set (QRCODE_FILES ${QRCODE_FILES}
+            src/qrcode/QREncoder.h
+            src/qrcode/QREncoder.cpp
+            src/qrcode/QREncodeResult.h
+            src/qrcode/QRMaskUtil.h
+            src/qrcode/QRMaskUtil.cpp
+            src/qrcode/QRMatrixUtil.h
+            src/qrcode/QRMatrixUtil.cpp
+            src/qrcode/QRWriter.h
+            src/qrcode/QRWriter.cpp
+        )
+    endif()
 endif()
 
 source_group (Sources FILES ${COMMON_FILES})

@@ -70,7 +70,7 @@ if (ZXING_READERS)
 
     find_package(OpenCV QUIET)
     if (OpenCV_FOUND)
-        add_executable (ZXingOpenCV ZXingOpenCV.cpp)
+        add_executable (ZXingOpenCV EXCLUDE_FROM_ALL ZXingOpenCV.cpp)
         target_include_directories (ZXingOpenCV PRIVATE ${OpenCV_INCLUDE_DIRS})
         target_link_libraries (ZXingOpenCV ZXing::ZXing ${OpenCV_LIBS})
     else ()
